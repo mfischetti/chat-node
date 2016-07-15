@@ -17,7 +17,7 @@ io.on('connection', function(socket){
   });
 });
 
-// Listen on port 3000
-http.listen(3000, function(){
+// Listen on env port or 3000 if env not available
+http.listen(process.env.PORT || 3000, function(){
   console.log('listening on *:3000');
 });
