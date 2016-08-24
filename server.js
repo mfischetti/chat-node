@@ -12,12 +12,16 @@ app.get('/', function(req, res){
 }); 
 
 io.on('connection', function(socket){
-  socket.on('chatMessage', function(msg){
-    io.emit('chatMessage', msg);
+  socket.on('chatMessage', function(from, msg){
+    io.emit('chatMessage', from, msg);
   });
+
+  socket.emit('chatMessage', 'You have joined the chat!')
+  socket.broadcast.emit('chatMessage', 'A user has connected to the chat.');
+
 });
 
-// Listen on env port or 3000 if env not available
+// Listen on env port for heroku or 3000 if locally
 http.listen(process.env.PORT || 3000, function(){
   console.log('listening on *:3000');
 });
