@@ -11,14 +11,29 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 }); 
 
+//listens to clients userJoin function to add username
 io.on('connection', function(socket){
-  socket.on('chatMessage', function(from, msg){
-    io.emit('chatMessage', from, msg);
+  socket.on('userJoin', function(username){
+		socket.username = username;	
+    console.log('User: ' + socket.username + ' has conected');
+    
+    socket.broadcast.emit('chatMessage', {
+      name: 'System',
+      text: socket.username + ' has joined the chat!'
+    });
+    
+    socket.emit('chatMessage', {
+      name: 'System',
+      text: 'You have joined the chat!'
+    });
+	});
+
+  socket.on('chatMessage', function(msg){
+    io.emit('chatMessage', {
+      name: socket.username,
+      text: msg
+    });
   });
-
-  socket.emit('chatMessage', 'You have joined the chat!')
-  socket.broadcast.emit('chatMessage', 'A user has connected to the chat.');
-
 });
 
 // Listen on env port for heroku or 3000 if locally
