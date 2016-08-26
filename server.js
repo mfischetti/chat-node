@@ -15,7 +15,7 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
   socket.on('userJoin', function(username){
 		socket.username = username;	
-    console.log('User: ' + socket.username + ' has conected');
+    console.log('User: ' + socket.username + ' has connected');
     
     socket.broadcast.emit('chatMessage', {
       name: 'System',
@@ -33,6 +33,7 @@ io.on('connection', function(socket){
       name: socket.username,
       text: msg
     });
+    console.log('User:' + socket.username + ' Message:'+msg);
   });
 });
 
