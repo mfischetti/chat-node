@@ -14,7 +14,7 @@ app.get('/', function(req, res){
 //listens to clients userJoin function to add username
 io.on('connection', function(socket){
   socket.on('userJoin', function(username){
-		socket.username = username;	
+    socket.username = username;	
     console.log('User: ' + socket.username + ' has connected');
     
     socket.broadcast.emit('chatMessage', {
@@ -26,7 +26,7 @@ io.on('connection', function(socket){
       name: 'System',
       text: 'You have joined the chat!'
     });
-	});
+  });
 
   socket.on('chatMessage', function(msg){
     io.emit('chatMessage', {
@@ -34,6 +34,15 @@ io.on('connection', function(socket){
       text: msg
     });
     console.log('User:' + socket.username + ' Message:'+msg);
+  });
+
+  //function when user disconnects from chat
+  socket.on('disconnect', function(){
+    console.log(socket.username + ' has disconnected');
+    socket.broadcast.emit('chatMessage', {
+      name: 'System',
+      text: socket.username + ' has disconnected'
+    });
   });
 });
 

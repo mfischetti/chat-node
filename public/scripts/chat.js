@@ -12,7 +12,7 @@ $('#m').val('').focus();
 
 //when user first connects prompt for username
 socket.on('connect', function(){
-		socket.emit('userJoin', prompt("Welcome to the Node Chat App. Please enter a username."));
+  socket.emit('userJoin', prompt("Welcome to the Node Chat App. Please enter a username."));
 });
 
 socket.on('chatMessage', function(msg){
